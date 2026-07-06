@@ -22,26 +22,24 @@ Do NOT `git add` anything — this is read-only inspection.
 
 ### Review
 
-Launch Blind Hunter and Edge Case Hunter in parallel without prior conversation context.
+The review layers are `{workflow.review_layers}`, resolved during activation.
 
-- **Blind Hunter** — prompt:
-  > Invoke the `bmad-review-adversarial-general` skill on this diff:
-  >
-  > {diff_output}
-- **Edge Case Hunter** — prompt:
-  > Invoke the `bmad-review-edge-case-hunter` skill on this diff:
-  >
-  > {diff_output}
+Skip every layer whose `instruction` is empty or missing — that is how an override disables a default layer — and every layer whose `when` condition (if present) does not hold in the current context. If no layers remain, HALT with status `blocked` and blocking condition `no active review layers`.
+
+Runtime placeholders: `{diff_output}` is the diff constructed above. `{verbatim_intent}` is the invocation intent exactly as this run received it at step-01; if the run started from an existing spec file rather than a fresh intent, it is the spec's `<intent-contract>` block instead.
+
+Execute all remaining layers in parallel wherever their execution methods allow: substitute the runtime placeholders (e.g. `{diff_output}`) into each layer's `instruction`, then follow it verbatim.
 
 ### Classify
 
-1. Deduplicate all review findings.
+1. Deduplicate only findings with the same claim and same required action. Then evaluate each remaining finding independently. Do not reject a finding because a related finding was rejected.
 2. Assign severity to each finding by consequence for the artifact's main consumer (software user, document reader, etc).
    Disregard any severity assigned by a reviewing subagent. Review subagents operate under by-design information asymmetry and do not have enough context to set final severity for this workflow.
    - `low`: none or cosmetic
    - `medium`: tolerable
    - `high`: intolerable
 3. Route each finding into exactly one triage category. The first three categories are **this story's problem** — caused or exposed by the current change. The last two are **not this story's problem**.
+   Scope authority: a finding may be routed to defer or reject *as out of scope* only on the authority of the intent itself. The spec's scope language, the plan, and the diff's own shape are not admissible scope authorities — if only they exclude a finding, treat it as evidence against the chosen reading (intent_gap or bad_spec), not as out of scope.
    - **intent_gap** — caused by the change; cannot be resolved from the spec because the captured intent is incomplete. Do not infer intent unless there is exactly one possible reading.
    - **bad_spec** — caused by the change, including direct deviations from spec. The spec should have been clear enough to prevent it. When in doubt between bad_spec and patch, prefer bad_spec — a spec-level fix is more likely to produce coherent code.
    - **patch** — caused by the change; trivially fixable without human input. Just part of the diff.
