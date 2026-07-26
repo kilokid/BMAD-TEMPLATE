@@ -100,6 +100,32 @@
         "./src/bmm-skills/4-implementation/bmad-retrospective",
         "./src/bmm-skills/4-implementation/bmad-qa-generate-e2e-tests"
       ]
+    },
+    {
+      "name": "ai-product-factory",
+      "source": "./",
+      "description": "Codex-first, risk-proportional product lifecycle and project delivery extension for BMad.",
+      "version": "2.0.0",
+      "author": {
+        "name": "kilokid"
+      },
+      "skills": [
+        "./expansion-packs/ai-product-factory/agents/core/bmad-apf-founder",
+        "./expansion-packs/ai-product-factory/agents/core/bmad-apf-product-operator",
+        "./expansion-packs/ai-product-factory/agents/core/bmad-apf-product-engineer",
+        "./expansion-packs/ai-product-factory/agents/core/bmad-apf-growth-operator",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-execute",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-project-contract",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-optimize-skills",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-launch-product",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-validate-opportunity",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-design-experiment",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-plan-product",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-plan-delivery",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-build-vertical-slice",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-release-product",
+        "./expansion-packs/ai-product-factory/workflows/bmad-apf-learn-and-iterate"
+      ]
     }
   ]
 }
